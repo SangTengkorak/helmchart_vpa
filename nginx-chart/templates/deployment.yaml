@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: nginx
+spec:
+  replicas: {{ .Values.nginx_chart.replicaCount }}
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.nginx_chart.image.repository }}:{{ .Values.nginx_chart.image.tag }}"
+          imagePullPolicy: {{ .Values.nginx_chart.image.pullPolicy }}
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP

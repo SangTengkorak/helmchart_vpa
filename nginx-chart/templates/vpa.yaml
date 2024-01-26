@@ -1,0 +1,24 @@
+{{- if .Values.nginx_chart.vpaScaling.enabled }}
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ .Release.Name }}-vpa
+  labels:
+    app: nginx
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: {{ .Release.Name }}
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+    - containerName: "*"
+      minAllowed:
+        cpu: "50m"
+        memory: "100Mi"
+      maxAllowed:
+        cpu: "500m"
+        memory: "600Mi"
+{{- end }}

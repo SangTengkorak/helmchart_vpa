@@ -1,0 +1,19 @@
+nginx_chart:
+  replicaCount: 2
+  
+  vpaScaling:
+    enabled: true
+
+  image:
+    repository: nginx
+    tag: "stable-alpine"
+    pullPolicy: IfNotPresent
+
+service:
+  name: nginx-service
+  type: ClusterIP
+  port: 80
+  targetPort: 9000
+
+env:
+  name: dev
